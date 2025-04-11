@@ -18,4 +18,9 @@ function removeCard(card) {
     card.remove();
 }
 
+const currentYearElement = document.querySelector('#current-year');
+if (currentYearElement) {
+    currentYearElement.textContent = new Date().getFullYear();
+}
+
 initialCards.forEach(card => placesList.append(createCard(card)));
