@@ -21,7 +21,6 @@ function removeCard(card) {
 const currentYearElement = document.querySelector('#current-year');
 if (currentYearElement) {
     currentYearElement.textContent = new Date().getFullYear().toString();
-    console.log(currentYearElement);
 }
 
 initialCards.forEach((card) => placesList.append(createCard(card)));
