@@ -3,12 +3,12 @@ const cardTemplate = document.querySelector('#card-template').content;
 const cardElement = cardTemplate.querySelector('.card');
 const placesList = document.querySelector('.places__list');
 
-function createCard(item) {
+function createCard({ name, link, imageDescription }) {
     const card = cardElement.cloneNode(true);
     const image = card.querySelector('.card__image');
-    image.src = item.link;
-    image.alt = item.imageDescription;
-    card.querySelector('.card__title').textContent = item.name;
+    image.src = link;
+    image.alt = imageDescription;
+    card.querySelector('.card__title').textContent = name;
     const deleteButton = card.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', () => removeCard(card));
     return card;
@@ -20,7 +20,8 @@ function removeCard(card) {
 
 const currentYearElement = document.querySelector('#current-year');
 if (currentYearElement) {
-    currentYearElement.textContent = new Date().getFullYear();
+    currentYearElement.textContent = new Date().getFullYear().toString();
+    console.log(currentYearElement);
 }
 
-initialCards.forEach(card => placesList.append(createCard(card)));
+initialCards.forEach((card) => placesList.append(createCard(card)));
