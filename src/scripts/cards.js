@@ -30,3 +30,5 @@ const initialCards = [
     imageDescription: 'Вечернее небо над прудом',
   },
 ];
+
+export { initialCards };

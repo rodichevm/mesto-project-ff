@@ -1,3 +1,13 @@
+import '../pages/index.css';
+import { initialCards } from './cards.js';
+import logo from '../images/logo.svg';
+import avatar from '../images/avatar.jpg';
+
+const logoElement = document.querySelector('.logo');
+const avatarElement = document.querySelector('.profile__image');
+logoElement.src = logo;
+avatarElement.setAttribute('style', `background-image: url(${avatar})`);
+
 const cardTemplate = document.querySelector('#card-template').content;
 
 const cardElement = cardTemplate.querySelector('.card');
