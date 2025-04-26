@@ -10,9 +10,19 @@ const avatarElement = document.querySelector('.profile__image');
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
 const currentYearElement = document.querySelector('#current-year');
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+
 const popupEditModal = document.querySelector('.popup_type_edit');
+const popupEditForm = document.forms['edit-profile'];
+
 const popupNewCardModal = document.querySelector('.popup_type_new-card');
+
 const popupImageModal = document.querySelector('.popup_type_image');
+const popupImage = document.querySelector('.popup__image');
+const popupImageCaption = document.querySelector('.popup__caption');
+
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 
@@ -27,15 +37,23 @@ initialCards.forEach((card) => {
   placesList.append(createCard(card, cardTemplate));
 });
 
-editButton.addEventListener('click', () => openModal(popupEditModal));
-addButton.addEventListener('click', () => openModal(popupNewCardModal));
+editButton.addEventListener('click', () => {
+  const profileNameInput = popupEditForm.elements.name;
+  const profileDescriptionInput = popupEditForm.elements.description;
+  profileNameInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
+  openModal(popupEditModal);
+});
+
+addButton.addEventListener('click', () => {
+  openModal(popupNewCardModal);
+});
+
 placesList.addEventListener('click', (event) => {
   if (event.target.classList.contains('card__image')) {
     const cardElement = event.target.closest('.card');
     const cardTitle = cardElement.querySelector('.card__title').textContent;
     console.log(cardTitle);
-    const popupImage = document.querySelector('.popup__image');
-    const popupImageCaption = document.querySelector('.popup__caption');
     popupImage.src = event.target.src;
     popupImageCaption.textContent = cardTitle;
     openModal(popupImageModal);
