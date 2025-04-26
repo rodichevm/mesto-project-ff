@@ -1,36 +1,47 @@
 import '../pages/index.css';
+import { createCard } from './card.js';
 import { initialCards } from './cards.js';
+import { openModal, addModalEventListeners } from './modal.js';
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 
 const logoElement = document.querySelector('.logo');
 const avatarElement = document.querySelector('.profile__image');
+const cardTemplate = document.querySelector('#card-template').content;
+const placesList = document.querySelector('.places__list');
+const currentYearElement = document.querySelector('#current-year');
+const popupEditModal = document.querySelector('.popup_type_edit');
+const popupNewCardModal = document.querySelector('.popup_type_new-card');
+const popupImageModal = document.querySelector('.popup_type_image');
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+
 logoElement.src = logo;
 avatarElement.setAttribute('style', `background-image: url(${avatar})`);
 
-const cardTemplate = document.querySelector('#card-template').content;
-
-const cardElement = cardTemplate.querySelector('.card');
-const placesList = document.querySelector('.places__list');
-
-function createCard({ name, link, imageDescription }) {
-  const card = cardElement.cloneNode(true);
-  const image = card.querySelector('.card__image');
-  image.src = link;
-  image.alt = imageDescription;
-  card.querySelector('.card__title').textContent = name;
-  const deleteButton = card.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', () => removeCard(card));
-  return card;
-}
-
-function removeCard(card) {
-  card.remove();
-}
-
-const currentYearElement = document.querySelector('#current-year');
 if (currentYearElement) {
   currentYearElement.textContent = new Date().getFullYear().toString();
 }
 
-initialCards.forEach((card) => placesList.append(createCard(card)));
+initialCards.forEach((card) => {
+  placesList.append(createCard(card, cardTemplate));
+});
+
+editButton.addEventListener('click', () => openModal(popupEditModal));
+addButton.addEventListener('click', () => openModal(popupNewCardModal));
+placesList.addEventListener('click', (event) => {
+  if (event.target.classList.contains('card__image')) {
+    const cardElement = event.target.closest('.card');
+    const cardTitle = cardElement.querySelector('.card__title').textContent;
+    console.log(cardTitle);
+    const popupImage = document.querySelector('.popup__image');
+    const popupImageCaption = document.querySelector('.popup__caption');
+    popupImage.src = event.target.src;
+    popupImageCaption.textContent = cardTitle;
+    openModal(popupImageModal);
+  }
+});
+
+addModalEventListeners(popupEditModal);
+addModalEventListeners(popupNewCardModal);
+addModalEventListeners(popupImageModal);
