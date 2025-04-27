@@ -17,10 +17,9 @@ const profileDescription = document.querySelector('.profile__description');
 
 const popupEditModal = document.querySelector('.popup_type_edit');
 const popupEditProfileForm = document.forms['edit-profile'];
-const profileTitleInput = popupEditProfileForm.elements.name;
-const profileDescriptionInput = popupEditProfileForm.elements.description;
 
-const popupNewCardModal = document.querySelector('.popup_type_new-card');
+const popupCreateCardModal = document.querySelector('.popup_type_new-card');
+const popupCreateCardForm = document.forms['new-place'];
 
 const popupImageModal = document.querySelector('.popup_type_image');
 const popupImage = document.querySelector('.popup__image');
@@ -29,11 +28,26 @@ const popupImageCaption = document.querySelector('.popup__caption');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 
-function handleFormSubmit(evt) {
-  evt.preventDefault();
+function handleEditFormSubmit(event) {
+  event.preventDefault();
+  const profileTitleInput = popupEditProfileForm.elements.name;
+  const profileDescriptionInput = popupEditProfileForm.elements.description;
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
   closeModal(popupEditModal);
+}
+
+function handleCreateCardForm(event) {
+  event.preventDefault();
+  const createCardNameInput = popupCreateCardForm.elements['place-name'].value;
+  const createCardLinkInput = popupCreateCardForm.elements.link.value;
+  const newCard = createCard(
+    { name: createCardNameInput, link: createCardLinkInput },
+    cardTemplate
+  );
+  placesList.prepend(newCard);
+  closeModal(popupCreateCardModal);
+  popupCreateCardForm.reset();
 }
 
 logoElement.src = logo;
@@ -54,7 +68,7 @@ editButton.addEventListener('click', () => {
 });
 
 addButton.addEventListener('click', () => {
-  openModal(popupNewCardModal);
+  openModal(popupCreateCardModal);
 });
 
 placesList.addEventListener('click', (event) => {
@@ -68,7 +82,8 @@ placesList.addEventListener('click', (event) => {
 });
 
 addModalEventListeners(popupEditModal);
-addModalEventListeners(popupNewCardModal);
+addModalEventListeners(popupCreateCardModal);
 addModalEventListeners(popupImageModal);
 
-popupEditProfileForm.addEventListener('submit', handleFormSubmit);
+popupEditProfileForm.addEventListener('submit', handleEditFormSubmit);
+popupCreateCardForm.addEventListener('submit', handleCreateCardForm);

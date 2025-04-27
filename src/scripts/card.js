@@ -1,4 +1,4 @@
-function createCard({ name, link, imageDescription }, cardTemplate) {
+function createCard({ name, link, imageDescription = '' }, cardTemplate) {
   const cardElement = cardTemplate.querySelector('.card');
   const card = cardElement.cloneNode(true);
   const image = card.querySelector('.card__image');
