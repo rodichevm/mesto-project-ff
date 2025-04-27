@@ -1,9 +1,10 @@
 import '../pages/index.css';
+import logo from '../images/logo.svg';
+import avatar from '../images/avatar.jpg';
 import { createCard, handleLikeCard } from './card.js';
 import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
-import logo from '../images/logo.svg';
-import avatar from '../images/avatar.jpg';
+
 
 const logoElement = document.querySelector('.logo');
 const avatarElement = document.querySelector('.profile__image');
