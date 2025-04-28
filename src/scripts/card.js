@@ -6,10 +6,10 @@ export function handleLikeCard(card) {
 }
 
 export function createCard(
-  { name, link, imageDescription = '' },
-  cardTemplate,
-  handleLikeCard,
-  handleImageClick
+    { name, link, imageDescription = '' },
+    cardTemplate,
+    handleLikeCard,
+    handleImageClick
 ) {
   const cardElement = cardTemplate.querySelector('.card');
   const card = cardElement.cloneNode(true);

@@ -5,7 +5,6 @@ import { createCard, handleLikeCard } from './card.js';
 import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
 
-
 const logoElement = document.querySelector('.logo');
 const avatarElement = document.querySelector('.profile__image');
 const currentYearElement = document.querySelector('#current-year');
@@ -35,10 +34,12 @@ function handleCreateCardForm(event) {
   event.preventDefault();
   const createCardNameInput = popupCreateCardForm.elements['place-name'].value;
   const createCardLinkInput = popupCreateCardForm.elements.link.value;
-  const newCard = createCard({
-    name: createCardNameInput,
-    link: createCardLinkInput
-  }, cardTemplate, handleLikeCard, handleImageClick);
+  const newCard = createCard(
+      { name: createCardNameInput, link: createCardLinkInput },
+      cardTemplate,
+      handleLikeCard,
+      handleImageClick
+  );
   placesList.prepend(newCard);
   closeModal(popupCreateCardModal);
   popupCreateCardForm.reset();
@@ -74,7 +75,9 @@ if (currentYearElement) {
 }
 
 initialCards.forEach((card) => {
-  placesList.append(createCard(card, cardTemplate, handleLikeCard, handleImageClick));
+  placesList.append(
+      createCard(card, cardTemplate, handleLikeCard, handleImageClick)
+  );
 });
 
 createCardButton.addEventListener('click', () => {
