@@ -1,12 +1,8 @@
 import '../pages/index.css';
-import logo from '../images/logo.svg';
-import avatar from '../images/avatar.jpg';
 import { createCard, handleLikeCard } from './card.js';
 import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
 
-const logoElement = document.querySelector('.logo');
-const avatarElement = document.querySelector('.profile__image');
 const currentYearElement = document.querySelector('#current-year');
 
 const cardTemplate = document.querySelector('#card-template').content;
@@ -66,9 +62,6 @@ export function handleImageClick(cardImage) {
     openModal(popupImageModal);
   });
 }
-
-logoElement.src = logo;
-avatarElement.setAttribute('style', `background-image: url(${avatar})`);
 
 if (currentYearElement) {
   currentYearElement.textContent = new Date().getFullYear().toString();
