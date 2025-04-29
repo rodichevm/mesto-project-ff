@@ -14,7 +14,7 @@
 }
 
 .profile__image {
-  background-image: url('../../images/avatar.jpg');
+  background-image: url('../../images/avatar.png');
 }
 
 @media screen and (max-width: 480px) {
