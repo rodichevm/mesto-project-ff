@@ -48,16 +48,12 @@ function handleEditFormSubmit(event) {
   closeModal(popupEditModal);
 }
 
-export function handleImageClick(cardImage) {
+function handleImageClick(cardImage) {
   cardImage.addEventListener('click', () => {
     const cardElement = cardImage.closest('.card');
     const cardTitle = cardElement.querySelector('.card__title').textContent;
     popupImage.src = cardImage.src;
-    if (cardImage.alt && cardImage.alt.trim() !== '') {
-      popupImage.alt = cardImage.alt;
-    } else {
-      popupImage.alt = cardTitle;
-    }
+    popupImage.alt = cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
     popupImageCaption.textContent = cardTitle;
     openModal(popupImageModal);
   });

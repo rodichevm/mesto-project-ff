@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
   {
     name: 'Ялта',
     link: 'https://64.media.tumblr.com/ec56f0ba1c0c9940aa23c72152ae9d78/tumblr_ojpuinFvJh1uz8f83o1_1280.jpg',
@@ -30,5 +30,3 @@ const initialCards = [
     imageDescription: 'Вечернее небо над прудом'
   }
 ];
-
-export { initialCards };
