@@ -3,28 +3,30 @@ import { createCard, handleLikeCard } from './card.js';
 import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
 
-const currentYearElement = document.querySelector('#current-year');
+const selector = document.querySelector.bind(document);
 
-const cardTemplate = document.querySelector('#card-template').content;
-const placesList = document.querySelector('.places__list');
+const currentYearElement = selector('#current-year');
 
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
+const cardTemplate = selector('#card-template').content;
+const placesList = selector('.places__list');
 
-const popupEditModal = document.querySelector('.popup_type_edit');
+const profileTitle = selector('.profile__title');
+const profileDescription = selector('.profile__description');
+
+const popupEditModal = selector('.popup_type_edit');
 const popupEditProfileForm = document.forms['edit-profile'];
 const profileTitleInput = popupEditProfileForm.elements.name;
 const profileDescriptionInput = popupEditProfileForm.elements.description;
 
-const popupCreateCardModal = document.querySelector('.popup_type_new-card');
+const popupCreateCardModal = selector('.popup_type_new-card');
 const popupCreateCardForm = document.forms['new-place'];
 
-const popupImageModal = document.querySelector('.popup_type_image');
-const popupImage = document.querySelector('.popup__image');
-const popupImageCaption = document.querySelector('.popup__caption');
+const popupImageModal = selector('.popup_type_image');
+const popupImage = selector('.popup__image');
+const popupImageCaption = selector('.popup__caption');
 
-const editProfileButton = document.querySelector('.profile__edit-button');
-const createCardButton = document.querySelector('.profile__add-button');
+const editProfileButton = selector('.profile__edit-button');
+const createCardButton = selector('.profile__add-button');
 
 function handleCreateCardForm(event) {
   event.preventDefault();
