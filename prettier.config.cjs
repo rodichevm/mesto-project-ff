@@ -5,4 +5,5 @@ module.exports = {
   tabWidth: 2,
   printWidth: 80,
   arrowParens: 'always',
+  bracketSpacing: true,
 };
