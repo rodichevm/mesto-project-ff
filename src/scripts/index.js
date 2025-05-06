@@ -31,10 +31,10 @@ function handleCreateCardForm(event) {
   const createCardNameInput = popupCreateCardForm.elements['place-name'].value;
   const createCardLinkInput = popupCreateCardForm.elements.link.value;
   const newCard = createCard(
-      { name: createCardNameInput, link: createCardLinkInput },
-      cardTemplate,
-      handleLikeCard,
-      handleImageClick
+    { name: createCardNameInput, link: createCardLinkInput },
+    cardTemplate,
+    handleLikeCard,
+    handleImageClick
   );
   placesList.prepend(newCard);
   closeModal(popupCreateCardModal);
@@ -53,7 +53,8 @@ function handleImageClick(cardImage) {
     const cardElement = cardImage.closest('.card');
     const cardTitle = cardElement.querySelector('.card__title').textContent;
     popupImage.src = cardImage.src;
-    popupImage.alt = cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
+    popupImage.alt =
+      cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
     popupImageCaption.textContent = cardTitle;
     openModal(popupImageModal);
   });
@@ -65,7 +66,7 @@ if (currentYearElement) {
 
 initialCards.forEach((card) => {
   placesList.append(
-      createCard(card, cardTemplate, handleLikeCard, handleImageClick)
+    createCard(card, cardTemplate, handleLikeCard, handleImageClick)
   );
 });
 

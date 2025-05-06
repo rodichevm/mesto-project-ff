@@ -6,10 +6,10 @@ export function handleLikeCard(card) {
 }
 
 export function createCard(
-    { name, link, imageDescription = '' },
-    cardTemplate,
-    handleLikeCard,
-    handleImageClick
+  { name, link, imageDescription = '' },
+  cardTemplate,
+  likeHandler,
+  imageClickHandler
 ) {
   const cardElement = cardTemplate.querySelector('.card');
   const card = cardElement.cloneNode(true);
@@ -19,8 +19,8 @@ export function createCard(
   card.querySelector('.card__title').textContent = name;
   const deleteButton = card.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', () => removeCard(card));
-  handleLikeCard(card);
-  handleImageClick(image);
+  likeHandler(card);
+  imageClickHandler(image);
   return card;
 }
 
