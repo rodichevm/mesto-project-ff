@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { createCard, handleLikeCard } from './card.js';
 import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
+import { enableValidation, clearValidation } from './validation.js';
 
 const selector = document.querySelector.bind(document);
 
@@ -41,6 +42,7 @@ function handleCreateCardForm(event) {
   placesList.prepend(newCard);
   closeModal(popupCreateCardModal);
   popupCreateCardForm.reset();
+  clearValidation(popupCreateCardForm);
 }
 
 function handleEditFormSubmit(event) {
@@ -77,6 +79,7 @@ createCardButton.addEventListener('click', () => {
 });
 
 editProfileButton.addEventListener('click', () => {
+  clearValidation(popupEditProfileForm);
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
   openModal(popupEditModal);
@@ -88,3 +91,5 @@ addModalEventListeners(popupImageModal);
 
 popupEditProfileForm.addEventListener('submit', handleEditFormSubmit);
 popupCreateCardForm.addEventListener('submit', handleCreateCardForm);
+
+enableValidation();
