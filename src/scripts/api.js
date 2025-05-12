@@ -79,3 +79,19 @@ export const addCard = (name, link) => {
       console.log(error);
     });
 };
+
+export const deleteCard = (cardId) => {
+  return fetch(`${config.baseUrl}${config.cardsUrl}/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
