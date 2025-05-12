@@ -28,11 +28,16 @@ export const getProfile = () => {
   return fetch(`${config.baseUrl}${config.usersUrl}/me`, {
     method: 'GET',
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const editProfile = (name, about) => {
@@ -43,11 +48,16 @@ export const editProfile = (name, about) => {
       name: name,
       about: about,
     }),
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const addCard = (name, link) => {
@@ -58,9 +68,14 @@ export const addCard = (name, link) => {
       name: name,
       link: link,
     }),
-  }).then((respone) => {
-    if (respone.ok) {
-      return respone.json();
-    }
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
