@@ -1,6 +1,10 @@
 import '../pages/index.css';
-import { createCard, handleLikeCard } from './card.js';
-import { openModal, addModalEventListeners, closeModal } from './modal.js';
+import { createCard, handleLikeClick } from './card.js';
+import {
+  openModalWindow,
+  addModalEventListeners,
+  closeModalWindow,
+} from './modal.js';
 import { enableValidation, clearValidation } from './validation.js';
 import { addCard, editProfile, getInitialCards, getProfile } from './api.js';
 
@@ -45,11 +49,11 @@ function handleCreateCardForm(event) {
     const newCard = createCard(
       { name: data.name, link: data.link },
       cardTemplate,
-      handleLikeCard,
+      handleLikeClick,
       handleImageClick
     );
     placesList.prepend(newCard);
-    closeModal(popupCreateCardModal);
+    closeModalWindow(popupCreateCardModal);
     popupCreateCardForm.reset();
     clearValidation(popupCreateCardForm);
   });
@@ -65,7 +69,7 @@ function handleEditFormSubmit(event) {
     .catch((err) => {
       console.error('Ошибка редактирования:', err);
     });
-  closeModal(popupEditModal);
+  closeModalWindow(popupEditModal);
 }
 
 function handleImageClick(cardImage) {
@@ -76,7 +80,7 @@ function handleImageClick(cardImage) {
     popupImage.alt =
       cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
     popupImageCaption.textContent = cardTitle;
-    openModal(popupImageModal);
+    openModalWindow(popupImageModal);
   });
 }
 
@@ -89,7 +93,7 @@ Promise.all([getProfile(), getInitialCards()])
     renderUserProfile(user);
     cards.forEach((card) => {
       placesList.append(
-        createCard(card, cardTemplate, handleLikeCard, handleImageClick)
+        createCard(card, user, cardTemplate, handleLikeClick, handleImageClick)
       );
     });
   })
@@ -98,14 +102,14 @@ Promise.all([getProfile(), getInitialCards()])
   });
 
 createCardButton.addEventListener('click', () => {
-  openModal(popupCreateCardModal);
+  openModalWindow(popupCreateCardModal);
 });
 
 editProfileButton.addEventListener('click', () => {
   clearValidation(popupEditProfileForm);
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
-  openModal(popupEditModal);
+  openModalWindow(popupEditModal);
 });
 
 addModalEventListeners(popupEditModal);
