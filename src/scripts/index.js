@@ -1,6 +1,5 @@
 import '../pages/index.css';
 import { createCard, handleLikeCard } from './card.js';
-import { initialCards } from './cards.js';
 import { openModal, addModalEventListeners, closeModal } from './modal.js';
 import { enableValidation, clearValidation } from './validation.js';
 import { addCard, editProfile, getInitialCards, getProfile } from './api.js';
@@ -43,7 +42,6 @@ function handleCreateCardForm(event) {
     popupCreateCardForm.elements['place-name'].value,
     popupCreateCardForm.elements.link.value
   ).then((data) => {
-    console.log(data);
     const newCard = createCard(
       { name: data.name, link: data.link },
       cardTemplate,
