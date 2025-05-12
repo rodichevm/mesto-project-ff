@@ -13,10 +13,6 @@
   padding: 36px 0;
 }
 
-.profile__image {
-  background-image: url('../../images/avatar.png');
-}
-
 @media screen and (max-width: 480px) {
   .profile {
     padding: 43px 0;
