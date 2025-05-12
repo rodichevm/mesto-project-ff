@@ -6,7 +6,7 @@ export function handleLikeCard(card) {
 }
 
 export function createCard(
-  { name, link, imageDescription = '' },
+  { name, link, likes, imageDescription = '' },
   cardTemplate,
   likeHandler,
   imageClickHandler
@@ -14,9 +14,13 @@ export function createCard(
   const cardElement = cardTemplate.querySelector('.card');
   const card = cardElement.cloneNode(true);
   const image = card.querySelector('.card__image');
+  const cardTitle = card.querySelector('.card__title');
+  const likeCounter = card.querySelector('.card__like-count');
+  cardTitle.textContent = name;
+  // likeCounter.textContent = likes.length === 0 ? '' : likes.length;
+  likeCounter.textContent = likes.length;
   image.src = link;
   image.alt = imageDescription.trim() === '' ? name : imageDescription;
-  card.querySelector('.card__title').textContent = name;
   const deleteButton = card.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', () => removeCard(card));
   likeHandler(card);
