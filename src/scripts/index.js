@@ -45,9 +45,10 @@ function handleCreateCardForm(event) {
   addCard(
     popupCreateCardForm.elements['place-name'].value,
     popupCreateCardForm.elements.link.value
-  ).then((data) => {
+  ).then((card) => {
     const newCard = createCard(
-      { name: data.name, link: data.link },
+      card,
+      card.owner,
       cardTemplate,
       handleLikeClick,
       handleImageClick
