@@ -2,6 +2,7 @@ const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-39',
   cardsUrl: '/cards',
   usersUrl: '/users',
+  likesUrl: '/likes',
   headers: {
     authorization: '51a21100-cb43-4102-be63-22dae278b0b1',
     'Content-Type': 'application/json',
@@ -85,6 +86,44 @@ export const deleteCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers,
   })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const likeCard = (cardId) => {
+  return fetch(
+    `${config.baseUrl}${config.cardsUrl}${config.likesUrl}/${cardId}`,
+    {
+      method: 'PUT',
+      headers: config.headers,
+    }
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const unLikeCard = (cardId) => {
+  return fetch(
+    `${config.baseUrl}${config.cardsUrl}${config.likesUrl}/${cardId}`,
+    {
+      method: 'DELETE',
+      headers: config.headers,
+    }
+  )
     .then((response) => {
       if (response.ok) {
         return response.json();

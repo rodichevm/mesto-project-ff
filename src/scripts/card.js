@@ -1,10 +1,18 @@
-import { deleteCard } from './api';
+import { deleteCard, likeCard, unLikeCard } from './api';
 
-export function handleLikeClick(card) {
+export function handleLikeClick(card, cardId, likeCounter) {
   const likeButton = card.querySelector('.card__like-button');
-  likeButton.addEventListener('click', (event) => {
-    event.target.classList.toggle('card__like-button_is-active');
-  });
+  if (likeButton.classList.contains('card__like-button_is-active')) {
+    unLikeCard(cardId).then((card) => {
+      likeButton.classList.remove('card__like-button_is-active');
+      likeCounter.textContent = card.likes.length;
+    });
+  } else {
+    likeCard(cardId).then((card) => {
+      likeButton.classList.add('card__like-button_is-active');
+      likeCounter.textContent = card.likes.length;
+    });
+  }
 }
 
 export function createCard(
@@ -37,7 +45,9 @@ export function createCard(
   if (isLiked) {
     likeButton.classList.add('card__like-button_is-active');
   }
-  likeClickHandler(card);
+  likeButton.addEventListener('click', () => {
+    likeClickHandler(card, _id, likeCounter);
+  });
   imageClickHandler(image);
   return card;
 }
