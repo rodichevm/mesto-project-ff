@@ -2,7 +2,9 @@ const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-39',
   cardsUrl: '/cards',
   usersUrl: '/users',
+  meUrl: '/me',
   likesUrl: '/likes',
+  avatarUrl: '/avatar',
   headers: {
     authorization: '51a21100-cb43-4102-be63-22dae278b0b1',
     'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ export const getInitialCards = () => {
 };
 
 export const getProfile = () => {
-  return fetch(`${config.baseUrl}${config.usersUrl}/me`, {
+  return fetch(`${config.baseUrl}${config.usersUrl}${config.meUrl}`, {
     method: 'GET',
     headers: config.headers,
   })
@@ -42,7 +44,7 @@ export const getProfile = () => {
 };
 
 export const editProfile = (name, about) => {
-  return fetch(`${config.baseUrl}${config.usersUrl}/me`, {
+  return fetch(`${config.baseUrl}${config.usersUrl}${config.meUrl}`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
@@ -122,6 +124,28 @@ export const unLikeCard = (cardId) => {
     {
       method: 'DELETE',
       headers: config.headers,
+    }
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.statusText}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const editProfileImage = (url) => {
+  return fetch(
+    `${config.baseUrl}${config.usersUrl}${config.meUrl}${config.avatarUrl}`,
+    {
+      method: 'PATCH',
+      headers: config.headers,
+      body: JSON.stringify({
+        avatar: url,
+      }),
     }
   )
     .then((response) => {

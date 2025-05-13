@@ -6,7 +6,13 @@ import {
   closeModalWindow,
 } from './modal.js';
 import { enableValidation, clearValidation } from './validation.js';
-import { addCard, editProfile, getInitialCards, getProfile } from './api.js';
+import {
+  addCard,
+  editProfile,
+  editProfileImage,
+  getInitialCards,
+  getProfile,
+} from './api.js';
 
 const selector = document.querySelector.bind(document);
 
@@ -19,20 +25,24 @@ const profileTitle = selector('.profile__title');
 const profileDescription = selector('.profile__description');
 const profileImage = selector('.profile__image');
 
-const popupEditModal = selector('.popup_type_edit');
+const popupEditAvatarModal = selector('.popup_type_edit-avatar');
+const popupEditAvatarForm = document.forms['new-avatar'];
+const editAvatarButton = selector('.profile__image-edit-button');
+const popupEditAvatarLinkInput = popupEditAvatarForm.elements['avatar-link'];
+
+const popupEditProfileModal = selector('.popup_type_edit');
 const popupEditProfileForm = document.forms['edit-profile'];
+const editProfileButton = selector('.profile__edit-button');
 const profileTitleInput = popupEditProfileForm.elements.name;
 const profileDescriptionInput = popupEditProfileForm.elements.description;
 
 const popupCreateCardModal = selector('.popup_type_new-card');
 const popupCreateCardForm = document.forms['new-place'];
+const createCardButton = selector('.profile__add-button');
 
 const popupImageModal = selector('.popup_type_image');
 const popupImage = selector('.popup__image');
 const popupImageCaption = selector('.popup__caption');
-
-const editProfileButton = selector('.profile__edit-button');
-const createCardButton = selector('.profile__add-button');
 
 function renderUserProfile({ name, about, avatar }) {
   profileTitle.textContent = name;
@@ -60,7 +70,7 @@ function handleCreateCardForm(event) {
   });
 }
 
-function handleEditFormSubmit(event) {
+function handleEditProfileForm(event) {
   event.preventDefault();
   editProfile(profileTitleInput.value, profileDescriptionInput.value)
     .then((data) => {
@@ -70,7 +80,15 @@ function handleEditFormSubmit(event) {
     .catch((err) => {
       console.error('Ошибка редактирования:', err);
     });
-  closeModalWindow(popupEditModal);
+  closeModalWindow(popupEditProfileModal);
+}
+
+function handleEditAvatarForm(event) {
+  event.preventDefault();
+  editProfileImage(popupEditAvatarLinkInput.value).then((data) => {
+    profileImage.style.backgroundImage = `url(${data.avatar})`;
+  });
+  closeModalWindow(popupEditAvatarModal);
 }
 
 function handleImageClick(cardImage) {
@@ -110,14 +128,22 @@ editProfileButton.addEventListener('click', () => {
   clearValidation(popupEditProfileForm);
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
-  openModalWindow(popupEditModal);
+  openModalWindow(popupEditProfileModal);
 });
 
-addModalEventListeners(popupEditModal);
+editAvatarButton.addEventListener('click', () => {
+  clearValidation(popupEditAvatarForm);
+  popupEditAvatarLinkInput.value = '';
+  openModalWindow(popupEditAvatarModal);
+});
+
+addModalEventListeners(popupEditProfileModal);
 addModalEventListeners(popupCreateCardModal);
 addModalEventListeners(popupImageModal);
+addModalEventListeners(popupEditAvatarModal);
 
-popupEditProfileForm.addEventListener('submit', handleEditFormSubmit);
+popupEditProfileForm.addEventListener('submit', handleEditProfileForm);
 popupCreateCardForm.addEventListener('submit', handleCreateCardForm);
+popupEditAvatarForm.addEventListener('submit', handleEditAvatarForm);
 
 enableValidation();

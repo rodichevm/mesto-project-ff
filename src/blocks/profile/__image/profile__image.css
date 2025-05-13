@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -7,6 +8,21 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+}
+
+.profile__image-edit-button {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8) url('../../../images/edit-icon.svg') center no-repeat;
+  background-size: 26px;
+  opacity: 0;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile__image:hover .profile__image-edit-button {
+  opacity: 1;
 }
 
 @media screen and (max-width: 740px) {
