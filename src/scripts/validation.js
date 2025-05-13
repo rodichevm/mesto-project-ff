@@ -14,7 +14,7 @@ export const showInputTypeError = (formElement, inputElement, errorMessage) => {
   errorElement.classList.add(validationConfig.errorClass);
 };
 
-export const hideInputTypeError = (formElement, inputElement) => {
+const hideInputTypeError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`#${inputElement.name}-error`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.add(validationConfig.errorClass);
@@ -23,22 +23,25 @@ export const hideInputTypeError = (formElement, inputElement) => {
 
 const isValid = (formElement, inputElement) => {
   if (inputElement.validity.valueMissing) {
-    const errorMessage = 'Вы пропустили это поле';
-    showInputTypeError(formElement, inputElement, errorMessage);
-  } else if (inputElement.validity.patternMismatch) {
-    const errorMessage = inputElement.dataset.errorMessage || 'Неверный формат';
-    showInputTypeError(formElement, inputElement, errorMessage);
-  } else if (inputElement.validity.typeMismatch) {
+    inputElement.setCustomValidity('Вы пропустили это поле');
+  } else if (
+    inputElement.validity.patternMismatch ||
+    inputElement.validity.typeMismatch
+  ) {
     const errorMessage =
-      inputElement.dataset.errorMessage || 'Неверный тип данных';
-    showInputTypeError(formElement, inputElement, errorMessage);
-  } else if (inputElement.validity.customError) {
-    const errorMessage =
-      inputElement.validationMessage || 'Ошибка при заполнении';
-    showInputTypeError(formElement, inputElement, errorMessage);
+      inputElement.dataset.errorMessage || inputElement.validationMessage;
+    inputElement.setCustomValidity(errorMessage);
+  } else {
+    inputElement.setCustomValidity('');
+  }
+  if (!inputElement.validity.valid) {
+    showInputTypeError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage
+    );
   } else {
     hideInputTypeError(formElement, inputElement);
-    inputElement.setCustomValidity('');
   }
 };
 

@@ -11,40 +11,32 @@ const config = {
   },
 };
 
+function handleResponse(response, customMessage) {
+  if (response.ok) {
+    return response.json();
+  }
+  return Promise.reject({
+    response: response,
+    message: customMessage || 'Ошибка при получении данных',
+  });
+}
+
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}${config.cardsUrl}`, {
     method: 'GET',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((response) =>
+    handleResponse(response, 'Ошибка при получении карточек')
+  );
 };
 
 export const getProfile = () => {
   return fetch(`${config.baseUrl}${config.usersUrl}${config.meUrl}`, {
     method: 'GET',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((response) =>
+    handleResponse(response, 'Ошибка при получении информации профиля')
+  );
 };
 
 export const editProfile = (name, about) => {
@@ -55,18 +47,9 @@ export const editProfile = (name, about) => {
       name: name,
       about: about,
     }),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((response) =>
+    handleResponse(response, 'Ошибка при редактировании информации профиля')
+  );
 };
 
 export const addCard = (name, link) => {
@@ -77,36 +60,18 @@ export const addCard = (name, link) => {
       name: name,
       link: link,
     }),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((response) =>
+    handleResponse(response, 'Ошибка при добавлении карточки')
+  );
 };
 
 export const deleteCard = (cardId) => {
   return fetch(`${config.baseUrl}${config.cardsUrl}/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((response) =>
+    handleResponse(response, 'Ошибка при удалении карточки')
+  );
 };
 
 export const likeCard = (cardId) => {
@@ -116,18 +81,7 @@ export const likeCard = (cardId) => {
       method: 'PUT',
       headers: config.headers,
     }
-  )
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  ).then((response) => handleResponse(response, 'Ошибка добавления лайка'));
 };
 
 export const unLikeCard = (cardId) => {
@@ -137,18 +91,7 @@ export const unLikeCard = (cardId) => {
       method: 'DELETE',
       headers: config.headers,
     }
-  )
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  ).then((response) => handleResponse(response, 'Ошибка при удаления лайка'));
 };
 
 export const editProfileImage = (url) => {
@@ -161,18 +104,9 @@ export const editProfileImage = (url) => {
         avatar: url,
       }),
     }
-  )
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  ).then((response) =>
+    handleResponse(response, 'Ошибка редактирования аватара')
+  );
 };
 
 export const checkUrlImage = (url) => {

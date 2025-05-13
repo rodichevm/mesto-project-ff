@@ -1,4 +1,5 @@
-import { deleteCard, likeCard, unLikeCard } from './api';
+import { likeCard, unLikeCard } from './api.js';
+import { handleDeleteCard } from './index.js';
 
 export function handleLikeClick(card, cardId, likeCounter) {
   const likeButton = card.querySelector('.card__like-button');
@@ -36,9 +37,7 @@ export function createCard(
   if (owner._id === user._id) {
     deleteButton.style.display = 'block';
     deleteButton.addEventListener('click', () => {
-      deleteCard(_id).then(() => {
-        removeCard(card);
-      });
+      handleDeleteCard(_id, card);
     });
   }
   const isLiked = likes.some((like) => like._id === user._id);
@@ -50,8 +49,4 @@ export function createCard(
   });
   imageClickHandler(image);
   return card;
-}
-
-export function removeCard(card) {
-  card.remove();
 }
