@@ -55,8 +55,18 @@ function renderUserProfile({ name, about, avatar }) {
   profileImage.style.backgroundImage = `url(${avatar})`;
 }
 
+function setButtonLoadingState(
+  button,
+  isLoading,
+  loadingText = 'Cохранение...',
+  defaultText = 'Cохранить'
+) {
+  button.textContent = isLoading ? loadingText : defaultText;
+}
+
 function handleCreateCardForm(event) {
   event.preventDefault();
+  setButtonLoadingState(event.submitter, true);
   addCard(
     popupCreateCardForm.elements['place-name'].value,
     popupCreateCardForm.elements.link.value
@@ -70,6 +80,9 @@ function handleCreateCardForm(event) {
     );
     placesList.prepend(newCard);
     closeModalWindow(popupCreateCardModal);
+    setTimeout(() => {
+      setButtonLoadingState(event.submitter, false);
+    }, 400);
     popupCreateCardForm.reset();
     clearValidation(popupCreateCardForm);
   });
@@ -77,19 +90,26 @@ function handleCreateCardForm(event) {
 
 function handleEditProfileForm(event) {
   event.preventDefault();
+  setButtonLoadingState(event.submitter, true);
   editProfile(profileTitleInput.value, profileDescriptionInput.value)
     .then((data) => {
       profileTitle.textContent = data.name;
       profileDescription.textContent = data.about;
     })
+    .then(() => {
+      closeModalWindow(popupEditProfileModal);
+      setTimeout(() => {
+        setButtonLoadingState(event.submitter, false);
+      }, 400);
+    })
     .catch((err) => {
       console.error('Ошибка редактирования:', err);
     });
-  closeModalWindow(popupEditProfileModal);
 }
 
 function handleEditAvatarForm(event) {
   event.preventDefault();
+  setButtonLoadingState(event.submitter, true);
   checkUrlImage(popupEditAvatarLinkInput.value)
     .then(() => {
       return editProfileImage(popupEditAvatarLinkInput.value);
@@ -97,6 +117,9 @@ function handleEditAvatarForm(event) {
     .then((data) => {
       profileImage.style.backgroundImage = `url(${data.avatar})`;
       closeModalWindow(popupEditAvatarModal);
+      setTimeout(() => {
+        setButtonLoadingState(event.submitter, false);
+      }, 400);
     })
     .catch((error) => {
       showInputTypeError(
