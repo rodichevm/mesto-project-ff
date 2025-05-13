@@ -5,9 +5,14 @@ import {
   addModalEventListeners,
   closeModalWindow,
 } from './modal.js';
-import { enableValidation, clearValidation } from './validation.js';
+import {
+  enableValidation,
+  clearValidation,
+  showInputTypeError,
+} from './validation.js';
 import {
   addCard,
+  checkUrlImage,
   editProfile,
   editProfileImage,
   getInitialCards,
@@ -85,10 +90,21 @@ function handleEditProfileForm(event) {
 
 function handleEditAvatarForm(event) {
   event.preventDefault();
-  editProfileImage(popupEditAvatarLinkInput.value).then((data) => {
-    profileImage.style.backgroundImage = `url(${data.avatar})`;
-  });
-  closeModalWindow(popupEditAvatarModal);
+  checkUrlImage(popupEditAvatarLinkInput.value)
+    .then(() => {
+      return editProfileImage(popupEditAvatarLinkInput.value);
+    })
+    .then((data) => {
+      profileImage.style.backgroundImage = `url(${data.avatar})`;
+      closeModalWindow(popupEditAvatarModal);
+    })
+    .catch((error) => {
+      showInputTypeError(
+        popupEditAvatarForm,
+        popupEditAvatarLinkInput,
+        error.message
+      );
+    });
 }
 
 function handleImageClick(cardImage) {
@@ -117,7 +133,7 @@ Promise.all([getProfile(), getInitialCards()])
     });
   })
   .catch((err) => {
-    console.log('Ошибка при загрузке:', err);
+    console.error('Ошибка при загрузке:', err);
   });
 
 createCardButton.addEventListener('click', () => {

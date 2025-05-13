@@ -20,7 +20,9 @@ export const getInitialCards = () => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -36,7 +38,9 @@ export const getProfile = () => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -56,7 +60,9 @@ export const editProfile = (name, about) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -76,7 +82,9 @@ export const addCard = (name, link) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -92,7 +100,9 @@ export const deleteCard = (cardId) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -111,7 +121,9 @@ export const likeCard = (cardId) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -130,7 +142,9 @@ export const unLikeCard = (cardId) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -152,9 +166,27 @@ export const editProfileImage = (url) => {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject(`Ошибка: ${response.statusText}`);
+      return Promise.reject(
+        `Ошибка: ${response.status} ${response.statusText}`
+      );
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+export const checkUrlImage = (url) => {
+  return fetch(url, {
+    method: 'HEAD',
+  }).then((response) => {
+    const contentType = response.headers.get('Content-Type');
+    const isImage = contentType === 'image/jpeg' || contentType === 'image/png';
+    if (response.ok && isImage) {
+      return true;
+    }
+    return Promise.reject({
+      message: 'Ссылка недействительна или не является изображением.',
+      status: response.status,
+    });
+  });
 };

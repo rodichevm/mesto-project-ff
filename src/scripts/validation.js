@@ -7,14 +7,14 @@ export const validationConfig = {
   errorClass: 'popup__error_visible',
 };
 
-const showInputTypeError = (formElement, inputElement, errorMessage) => {
+export const showInputTypeError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`#${inputElement.name}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(validationConfig.errorClass);
 };
 
-const hideInputTypeError = (formElement, inputElement) => {
+export const hideInputTypeError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`#${inputElement.name}-error`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.add(validationConfig.errorClass);
@@ -23,23 +23,22 @@ const hideInputTypeError = (formElement, inputElement) => {
 
 const isValid = (formElement, inputElement) => {
   if (inputElement.validity.valueMissing) {
-    inputElement.setCustomValidity('Вы пропустили это поле');
+    const errorMessage = 'Вы пропустили это поле';
+    showInputTypeError(formElement, inputElement, errorMessage);
   } else if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+    const errorMessage = inputElement.dataset.errorMessage || 'Неверный формат';
+    showInputTypeError(formElement, inputElement, errorMessage);
   } else if (inputElement.validity.typeMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-  } else {
-    inputElement.setCustomValidity('');
-  }
-
-  if (!inputElement.validity.valid) {
-    showInputTypeError(
-      formElement,
-      inputElement,
-      inputElement.validationMessage
-    );
+    const errorMessage =
+      inputElement.dataset.errorMessage || 'Неверный тип данных';
+    showInputTypeError(formElement, inputElement, errorMessage);
+  } else if (inputElement.validity.customError) {
+    const errorMessage =
+      inputElement.validationMessage || 'Ошибка при заполнении';
+    showInputTypeError(formElement, inputElement, errorMessage);
   } else {
     hideInputTypeError(formElement, inputElement);
+    inputElement.setCustomValidity('');
   }
 };
 
