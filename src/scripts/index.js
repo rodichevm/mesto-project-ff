@@ -20,6 +20,15 @@ import {
   getProfile,
 } from './api.js';
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
+
 const selector = document.querySelector.bind(document);
 const currentYearElement = selector('#current-year');
 
@@ -100,7 +109,7 @@ function handleCreateCardSubmit(event) {
         setButtonLoadingState(event.submitter, false);
       }, 400);
       createCardForm.reset();
-      clearValidation(createCardForm);
+      clearValidation(createCardForm, validationConfig);
     })
     .catch((error) => {
       console.error(error);
@@ -188,21 +197,21 @@ Promise.all([getProfile(), getInitialCards()])
   });
 
 createCardButton.addEventListener('click', () => {
-  clearValidation(createCardForm);
+  clearValidation(createCardForm, validationConfig);
   createCardNameInput.value = '';
   createCardLinkInput.value = '';
   openModalWindow(createCardModalWindow);
 });
 
 editProfileButton.addEventListener('click', () => {
-  clearValidation(editProfileForm);
+  clearValidation(editProfileForm, validationConfig);
   editProfileTitleInput.value = profileTitle.textContent;
   editProfileDescriptionInput.value = profileDescription.textContent;
   openModalWindow(editProfileModalWindow);
 });
 
 editAvatarButton.addEventListener('click', () => {
-  clearValidation(editAvatarForm);
+  clearValidation(editAvatarForm, validationConfig);
   editAvatarLinkInput.value = '';
   openModalWindow(editAvatarModalWindow);
 });
@@ -218,4 +227,4 @@ createCardForm.addEventListener('submit', handleCreateCardSubmit);
 editAvatarForm.addEventListener('submit', handleEditAvatarSubmit);
 deleteCardForm.addEventListener('submit', handleDeleteCardSubmit);
 
-enableValidation();
+enableValidation(validationConfig);
