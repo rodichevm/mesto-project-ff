@@ -34,6 +34,7 @@ const currentYearElement = selector('#current-year');
 
 const cardTemplate = selector('#card-template').content;
 const placesList = selector('.places__list');
+const popupsList = document.querySelectorAll('.popup');
 
 const profileTitle = selector('.profile__title');
 const profileDescription = selector('.profile__description');
@@ -41,19 +42,17 @@ const profileImage = selector('.profile__image');
 
 const editAvatarModalWindow = selector('.popup_type_edit-avatar');
 const editAvatarForm = document.forms['new-avatar'];
-const editAvatarButton = selector('.profile__image-edit-button');
 const editAvatarLinkInput = editAvatarForm.elements['avatar-link'];
+const editAvatarButton = selector('.profile__image-edit-button');
 
 const editProfileModalWindow = selector('.popup_type_edit');
 const editProfileForm = document.forms['edit-profile'];
-const editProfileButton = selector('.profile__edit-button');
 const editProfileTitleInput = editProfileForm.elements.name;
 const editProfileDescriptionInput = editProfileForm.elements.description;
+const editProfileButton = selector('.profile__edit-button');
 
 const createCardModalWindow = selector('.popup_type_new-card');
 const createCardForm = document.forms['new-place'];
-const createCardNameInput = createCardForm.elements['place-name'];
-const createCardLinkInput = createCardForm.elements.link;
 const createCardButton = selector('.profile__add-button');
 
 const deleteCardModalWindow = selector('.popup_type_delete_card');
@@ -106,15 +105,12 @@ function handleCreateCardSubmit(event) {
       );
       placesList.prepend(newCard);
       closeModalWindow(createCardModalWindow);
-      setTimeout(() => {
-        setButtonLoadingState(event.submitter, false);
-      }, 400);
       createCardForm.reset();
-      clearValidation(createCardForm, validationConfig);
     })
     .catch((error) => {
       console.error(error);
-    });
+    })
+    .finally(() => setButtonLoadingState(event.submitter, false));
 }
 
 const handleDeleteCardSubmit = (event) => {
@@ -139,13 +135,11 @@ function handleEditProfileSubmit(event) {
     })
     .then(() => {
       closeModalWindow(editProfileModalWindow);
-      setTimeout(() => {
-        setButtonLoadingState(event.submitter, false);
-      }, 400);
     })
     .catch((err) => {
       console.error('Ошибка редактирования:', err);
-    });
+    })
+    .finally(() => setButtonLoadingState(event.submitter, false));
 }
 
 function handleEditAvatarSubmit(event) {
@@ -158,26 +152,22 @@ function handleEditAvatarSubmit(event) {
     .then((data) => {
       profileImage.style.backgroundImage = `url(${data.avatar})`;
       closeModalWindow(editAvatarModalWindow);
-      setTimeout(() => {
-        setButtonLoadingState(event.submitter, false);
-      }, 400);
     })
     .catch((error) => {
       showInputTypeError(editAvatarForm, editAvatarLinkInput, error.message);
       setButtonLoadingState(event.submitter, false);
-    });
+    })
+    .finally(() => setButtonLoadingState(event.submitter, false));
 }
 
 function handleImageClick(cardImage) {
-  cardImage.addEventListener('click', () => {
-    const cardElement = cardImage.closest('.card');
-    const cardTitle = cardElement.querySelector('.card__title').textContent;
-    popupImage.src = cardImage.src;
-    popupImage.alt =
-      cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
-    popupImageCaption.textContent = cardTitle;
-    openModalWindow(imageModalWindow);
-  });
+  const cardElement = cardImage.closest('.card');
+  const cardTitle = cardElement.querySelector('.card__title').textContent;
+  popupImage.src = cardImage.src;
+  popupImage.alt =
+    cardImage.alt && cardImage.alt.trim() !== '' ? cardImage.alt : cardTitle;
+  popupImageCaption.textContent = cardTitle;
+  openModalWindow(imageModalWindow);
 }
 
 if (currentYearElement) {
@@ -206,8 +196,7 @@ Promise.all([getProfile(), getInitialCards()])
 
 createCardButton.addEventListener('click', () => {
   clearValidation(createCardForm, validationConfig);
-  createCardNameInput.value = '';
-  createCardLinkInput.value = '';
+  createCardForm.reset();
   openModalWindow(createCardModalWindow);
 });
 
@@ -220,15 +209,11 @@ editProfileButton.addEventListener('click', () => {
 
 editAvatarButton.addEventListener('click', () => {
   clearValidation(editAvatarForm, validationConfig);
-  editAvatarLinkInput.value = '';
+  editAvatarForm.reset();
   openModalWindow(editAvatarModalWindow);
 });
 
-addModalEventListeners(editProfileModalWindow);
-addModalEventListeners(createCardModalWindow);
-addModalEventListeners(imageModalWindow);
-addModalEventListeners(editAvatarModalWindow);
-addModalEventListeners(deleteCardModalWindow);
+popupsList.forEach((popup) => addModalEventListeners(popup));
 
 editProfileForm.addEventListener('submit', handleEditProfileSubmit);
 createCardForm.addEventListener('submit', handleCreateCardSubmit);
