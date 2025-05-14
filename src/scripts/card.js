@@ -42,6 +42,9 @@ export function createCard(
   likeCounter.textContent = likes.length;
   image.src = link;
   image.alt = name;
+  image.addEventListener('click', () => {
+    imageClickHandler(image);
+  });
   if (owner._id === user._id) {
     deleteButton.classList.add('card__delete-button_is-visible');
     deleteButton.addEventListener('click', () => {
@@ -55,6 +58,5 @@ export function createCard(
   likeButton.addEventListener('click', () => {
     likeClickHandler(card, _id, likeCounter);
   });
-  imageClickHandler(image);
   return card;
 }
