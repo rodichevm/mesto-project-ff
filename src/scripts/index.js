@@ -101,7 +101,8 @@ function handleCreateCardSubmit(event) {
         card.owner,
         cardTemplate,
         handleLikeClick,
-        handleImageClick
+        handleImageClick,
+        handleDeleteCard
       );
       placesList.prepend(newCard);
       closeModalWindow(createCardModalWindow);
@@ -188,7 +189,14 @@ Promise.all([getProfile(), getInitialCards()])
     renderUserProfile(user);
     cards.forEach((card) => {
       placesList.append(
-        createCard(card, user, cardTemplate, handleLikeClick, handleImageClick)
+        createCard(
+          card,
+          user,
+          cardTemplate,
+          handleLikeClick,
+          handleImageClick,
+          handleDeleteCard
+        )
       );
     });
   })

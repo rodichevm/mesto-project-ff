@@ -1,18 +1,25 @@
 import { likeCard, unLikeCard } from './api.js';
-import { handleDeleteCard } from './index.js';
 
 export function handleLikeClick(card, cardId, likeCounter) {
   const likeButton = card.querySelector('.card__like-button');
   if (likeButton.classList.contains('card__like-button_is-active')) {
-    unLikeCard(cardId).then((card) => {
-      likeButton.classList.remove('card__like-button_is-active');
-      likeCounter.textContent = card.likes.length;
-    });
+    unLikeCard(cardId)
+      .then((card) => {
+        likeButton.classList.remove('card__like-button_is-active');
+        likeCounter.textContent = card.likes.length;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } else {
-    likeCard(cardId).then((card) => {
-      likeButton.classList.add('card__like-button_is-active');
-      likeCounter.textContent = card.likes.length;
-    });
+    likeCard(cardId)
+      .then((card) => {
+        likeButton.classList.add('card__like-button_is-active');
+        likeCounter.textContent = card.likes.length;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
 
@@ -21,7 +28,8 @@ export function createCard(
   user,
   cardTemplate,
   likeClickHandler,
-  imageClickHandler
+  imageClickHandler,
+  deleteCardHandler
 ) {
   const cardElement = cardTemplate.querySelector('.card');
   const card = cardElement.cloneNode(true);
@@ -35,9 +43,9 @@ export function createCard(
   image.src = link;
   image.alt = name;
   if (owner._id === user._id) {
-    deleteButton.style.display = 'block';
+    deleteButton.classList.add('card__delete-button_is-visible');
     deleteButton.addEventListener('click', () => {
-      handleDeleteCard(_id, card);
+      deleteCardHandler(_id, card);
     });
   }
   const isLiked = likes.some((like) => like._id === user._id);
